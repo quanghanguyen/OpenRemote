@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.openremote.R
 import com.example.openremote.databinding.ActivityLoginBinding
 import com.example.openremote.home.HomeActivity
+import com.example.openremote.request.RequestActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class LoginActivity : AppCompatActivity() {
@@ -42,7 +43,8 @@ class LoginActivity : AppCompatActivity() {
                     is LoginViewModel.LoginUiState.Success -> {
                         Toast.makeText(this@LoginActivity, result.successMessage, Toast.LENGTH_SHORT).show()
                         binding.progressBar.isVisible = false
-                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                        startActivity(Intent(this@LoginActivity, RequestActivity::class.java))
+                        finish()
                     }
                     is LoginViewModel.LoginUiState.Error -> {
                         Toast.makeText(this@LoginActivity, result.errorMessage, Toast.LENGTH_SHORT).show()
