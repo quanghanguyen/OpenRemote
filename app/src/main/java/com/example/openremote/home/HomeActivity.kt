@@ -1,12 +1,18 @@
 package com.example.openremote.home
 
+import android.annotation.SuppressLint
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.openremote.R
+import com.example.openremote.callapi.viewmodel.AssetViewModel
 import com.example.openremote.databinding.ActivityHomeBinding
 import com.example.openremote.request.RequestActivity
 import com.example.openremote.util.Const.REQUEST_PERMISSIONS_REQUEST_CODE
@@ -23,6 +29,7 @@ class HomeActivity : AppCompatActivity() {
     private var _binding: ActivityHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var map: MapView
+    private val viewModel: AssetViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +39,21 @@ class HomeActivity : AppCompatActivity() {
         map = binding.map
         map.setTileSource(TileSourceFactory.MAPNIK)
         mapConfig()
+        initObserve()
+        viewModel.callApi()
+    }
+
+    private fun initObserve() {
+        viewModel.callApiResult.observe(this) {result ->
+            when (result) {
+                is AssetViewModel.CallApiResult.ResultOk -> {
+                    Log.e("Success", result.result.body().toString())
+                }
+                is AssetViewModel.CallApiResult.ResultError -> {
+                    Log.e("Error", "Error")
+                }
+            }
+        }
     }
 
     private fun mapConfig() {
@@ -39,8 +61,8 @@ class HomeActivity : AppCompatActivity() {
         val currentLong = intent.getDoubleExtra("long", 0.1)
         Log.e("Lat", currentLat.toString())
         val mapController = map.controller
-        mapController.setZoom(15)
-        val startPoint = GeoPoint(16.4637, 107.5909)
+        mapController.setZoom(20)
+        val startPoint = GeoPoint(currentLat, currentLat)
         mapController.setCenter(startPoint)
 
         //marker - location của thiết bị hiện tại
@@ -48,8 +70,33 @@ class HomeActivity : AppCompatActivity() {
         myLocation.position = startPoint
         myLocation.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_location_on_24)
         myLocation.title = "Vị trí thiết bị của tôi"
+        myLocation.subDescription = getDeviceInfo()
         map.overlays.add(myLocation)
         map.invalidate()
+    }
+
+    @SuppressLint("HardwareIds")
+    private fun getDeviceInfo(): String {
+        return "Brand: ${Build.BRAND} \n" +
+                "DeviceID: ${
+                    Settings.Secure.getString(
+                        contentResolver,
+                        Settings.Secure.ANDROID_ID
+                    )
+                } \n" +
+                "Model: ${Build.MODEL} \n" +
+                "ID: ${Build.ID} \n" +
+                "SDK: ${Build.VERSION.SDK_INT} \n" +
+                "Manufacture: ${Build.MANUFACTURER} \n" +
+                "Brand: ${Build.BRAND} \n" +
+                "User: ${Build.USER} \n" +
+                "Type: ${Build.TYPE} \n" +
+                "Base: ${Build.VERSION_CODES.BASE} \n" +
+                "Incremental: ${Build.VERSION.INCREMENTAL} \n" +
+                "Board: ${Build.BOARD} \n" +
+                "Host: ${Build.HOST} \n" +
+                "FingerPrint: ${Build.FINGERPRINT} \n" +
+                "Version Code: ${Build.VERSION.RELEASE}"
     }
 
     override fun onResume() {
