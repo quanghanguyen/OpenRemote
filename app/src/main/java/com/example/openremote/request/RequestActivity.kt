@@ -24,6 +24,8 @@ import androidx.core.view.isVisible
 import com.example.openremote.R
 import com.example.openremote.databinding.ActivityRequestBinding
 import com.example.openremote.databinding.LocationAccessDialogBinding
+import com.example.openremote.details.DetailsActivity
+import com.example.openremote.details.InsightsActivity
 import com.example.openremote.home.HomeActivity
 import com.example.openremote.util.Const.permissionId
 import com.example.openremote.util.Variables.currentAddress
@@ -50,6 +52,20 @@ class RequestActivity : AppCompatActivity() {
         locationRequest()
         triggerAccess()
         nextPage()
+        initDetails()
+        initInsight()
+    }
+
+    private fun initInsight() {
+        binding.insight.setOnClickListener {
+            startActivity(Intent(this, InsightsActivity::class.java))
+        }
+    }
+
+    private fun initDetails() {
+        binding.details.setOnClickListener {
+            startActivity(Intent(this, DetailsActivity::class.java))
+        }
     }
 
     private fun triggerAccess() {
