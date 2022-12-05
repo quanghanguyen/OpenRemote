@@ -1,6 +1,7 @@
 package com.example.openremote.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,8 @@ import androidx.core.content.ContextCompat
 import com.example.openremote.R
 import com.example.openremote.callapi.viewmodel.AssetViewModel
 import com.example.openremote.databinding.ActivityHomeBinding
+import com.example.openremote.details.DetailsActivity
+import com.example.openremote.details.InsightsActivity
 import com.example.openremote.request.RequestActivity
 import com.example.openremote.util.Const.REQUEST_PERMISSIONS_REQUEST_CODE
 import com.google.android.gms.maps.model.Marker
@@ -41,6 +44,20 @@ class HomeActivity : AppCompatActivity() {
         mapConfig()
         initObserve()
         viewModel.callApi()
+        initDetails()
+        initInsight()
+    }
+
+    private fun initInsight() {
+        binding.insight.setOnClickListener {
+            startActivity(Intent(this, InsightsActivity::class.java))
+        }
+    }
+
+    private fun initDetails() {
+        binding.details.setOnClickListener {
+            startActivity(Intent(this, DetailsActivity::class.java))
+        }
     }
 
     private fun initObserve() {
@@ -62,7 +79,7 @@ class HomeActivity : AppCompatActivity() {
         Log.e("Lat", currentLat.toString())
         val mapController = map.controller
         mapController.setZoom(20)
-        val startPoint = GeoPoint(currentLat, currentLat)
+        val startPoint = GeoPoint(currentLat, currentLong)
         mapController.setCenter(startPoint)
 
         //marker - location của thiết bị hiện tại

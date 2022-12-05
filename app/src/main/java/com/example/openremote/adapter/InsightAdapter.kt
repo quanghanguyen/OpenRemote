@@ -11,7 +11,11 @@ class InsightAdapter(private val mList: List<InsightModel>) : RecyclerView.Adapt
     class MyViewHolder(private val itemInsightBinding : InsightsItemBinding) : RecyclerView.ViewHolder(itemInsightBinding.root) {
         fun bind (data : InsightModel) {
             with(itemInsightBinding) {
+                name.text = data.title
+                image.setImageResource(data.image)
+                gasIcon.setImageResource(data.icon)
                 km.text = data.km
+                number.text = data.date
             }
         }
     }
@@ -26,6 +30,6 @@ class InsightAdapter(private val mList: List<InsightModel>) : RecyclerView.Adapt
     }
 
     override fun getItemCount(): Int {
-        return mList.size;
+        return mList.size
     }
 }

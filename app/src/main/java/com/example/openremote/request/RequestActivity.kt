@@ -52,20 +52,6 @@ class RequestActivity : AppCompatActivity() {
         locationRequest()
         triggerAccess()
         nextPage()
-        initDetails()
-        initInsight()
-    }
-
-    private fun initInsight() {
-        binding.insight.setOnClickListener {
-            startActivity(Intent(this, InsightsActivity::class.java))
-        }
-    }
-
-    private fun initDetails() {
-        binding.details.setOnClickListener {
-            startActivity(Intent(this, DetailsActivity::class.java))
-        }
     }
 
     private fun triggerAccess() {

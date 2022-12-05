@@ -23,9 +23,10 @@ class InsightsActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         val data = ArrayList<InsightModel>()
-        for (i in 15..20) {
-            data.add(InsightModel("$i kW"))
-        }
+        data.add(InsightModel("CHARGER 1 MARKTHAL - POWER", R.drawable.img_5, R.drawable.ic_baseline_local_gas_station_24, "17 kW", "-8"))
+        data.add(InsightModel("CHARGER 2 MARKTHAL - POWER", R.drawable.img_6, R.drawable.ic_baseline_local_gas_station_24, "10 kW", "-15"))
+        data.add(InsightModel("WEATHER - TEMPERATURE", R.drawable.img_7, R.drawable.ic_baseline_cloud_24, "32.12", "-20"))
+        data.add(InsightModel("WEATHER - TEMPERATURE 2",R.drawable.img_8, R.drawable.ic_baseline_cloud_24, "25.64", "-18"))
         val adapter = InsightAdapter(data)
         binding.recyclerView.adapter = adapter
     }
