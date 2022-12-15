@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
     private fun collectFlow() {
         lifecycleScope.launchWhenStarted {
             viewModel.loginState.collect { result->
-                when(result) {
+                when (result) {
                     is LoginViewModel.LoginUiState.Success -> {
                         Toast.makeText(this@LoginActivity, result.successMessage, Toast.LENGTH_SHORT).show()
                         binding.progressBar.isVisible = false
